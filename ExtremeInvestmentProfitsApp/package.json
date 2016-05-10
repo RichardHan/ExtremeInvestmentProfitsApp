@@ -1,0 +1,13 @@
+{
+  "author": {
+    "email": "ExtremeInvestmentProfitsApp+qwweee7467@gmail.com",
+    "name": "Richard Hahn"
+  },
+  "dependencies": {
+    "crawler": "^0.4.3"
+  },
+  "description": "ExtremeInvestmentProfitsApp",
+  "main": "app.js",
+  "name": "Extreme Investment Profits App",
+  "version": "0.0.0"
+}
