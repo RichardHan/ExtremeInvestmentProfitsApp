@@ -22,12 +22,13 @@ c.queue(['http://jamendo.com/', 'http://tedxparis.com']);
 
 // Queue URLs with custom callbacks & parameters
 c.queue([{
-        uri: 'http://parishackers.org/',
+        uri: 'https://www.google.com.tw/',
         jQuery: false,
         
         // The global callback won't be called
-        callback: function (error, result) {
+        callback: function (error, result) {            
             console.log('Grabbed', result.body.length, 'bytes');
+            console.log(result.body.substring(0,500));
         }
     }]);
 
