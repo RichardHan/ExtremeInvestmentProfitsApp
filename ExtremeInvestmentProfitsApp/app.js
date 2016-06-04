@@ -1,46 +1,35 @@
-﻿var Crawler = require("crawler");
-var url = require('url');
+﻿var Crawler = require("simplecrawler"),
+    request = require("request"),
+    url = require('url'),
+    cheerio = require('cheerio'),
+    crawlerSetup = require('./crawlerSetup.js');
 
-var c = new Crawler({
-    maxConnections : 10,
-    // This will be called for each crawled page
-    callback : function (error, result, $) {
-        // $ is Cheerio by default
-        //a lean implementation of core jQuery designed specifically for the server
-        $('a').each(function (index, a) {
-            var toQueueUrl = $(a).attr('href');
-            c.queue(toQueueUrl);
-        });
-    }
-});
+var crawler = new Crawler(crawlerSetup.hostName, crawlerSetup.initialPath);
+crawler.initialProtocol = crawlerSetup.initialProtocol;
+crawler.needsAuth = crawlerSetup.needsAuth;
+crawler.authUser = crawlerSetup.authUser;
+crawler.authPass = crawlerSetup.authPass;
+crawler.interval = crawlerSetup.interval;
+crawler.initialPath = crawlerSetup.initialPath;
+crawler.maxConcurrency = crawlerSetup.maxConcurrency;
+crawler.maxDepth = crawlerSetup.maxDepth;
+crawler.domainWhitelist = crawlerSetup.domainWhitelist;
 
-// Queue just one URL, with default callback
-c.queue('http://joshfire.com');
+crawler.cache = new Crawler.cache('D:/sites');
 
-// Queue a list of URLs
-c.queue(['http://jamendo.com/', 'http://tedxparis.com']);
-
-// Queue URLs with custom callbacks & parameters
-c.queue([{
-        uri: 'https://www.google.com.tw/',
-        jQuery: false,
-        
-        // The global callback won't be called
-        callback: function (error, result) {            
-            console.log('Grabbed', result.body.length, 'bytes');
-            console.log(result.body.substring(0,500));
+crawler.discoverResources = function (buffer, queueItem) {
+    var $ = cheerio.load(buffer.toString("utf8"));
+    return $("a[href]").map(function () {
+        var _href = $(this).attr("href");
+        if (_href.indexOf("html") > 0 && _href.indexOf("#comments") == -1) {
+            return $(this).attr("href");
         }
-    }]);
-
-// Queue using a function
-var googleSearch = function (search) {
-    return 'http://www.google.fr/search?q=' + search;
+    }).get();
 };
-c.queue({
-    uri: googleSearch('cheese')
+
+crawler.on("fetchcomplete", function (queueItem, responseBuffer, response) {
+    console.log("%s (%d bytes) %s", queueItem.url, responseBuffer.length, response.headers['content-type']);
+    //console.log(responseBuffer.toString());
 });
 
-// Queue some HTML code directly without grabbing (mostly for tests)
-c.queue([{
-        html: '<p>This is a <strong>test</strong></p>'
-    }]);
+crawler.start();
