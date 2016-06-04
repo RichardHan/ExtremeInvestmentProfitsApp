@@ -1,13 +1,21 @@
 {
+  "private":true,
   "author": {
     "email": "ExtremeInvestmentProfitsApp+qwweee7467@gmail.com",
     "name": "Richard Hahn"
   },
-  "dependencies": {
-    "crawler": "^0.4.3"
+  "dependencies": {    
+    "simplecrawler": "^0.7.0",
+    "url": "^0.11.0",
+    "request": "^2.72.0",
+    "cheerio": "^0.20.0"
   },
   "description": "ExtremeInvestmentProfitsApp",
   "main": "app.js",
-  "name": "ExtremeProfitsApp",
-  "version": "0.0.0"
+  "name": "extreme_investment_profits_app",
+  "version": "0.0.0",
+  "scripts": {
+    "start":"npm install",
+    "run":"node app.js"
+  }
 }
