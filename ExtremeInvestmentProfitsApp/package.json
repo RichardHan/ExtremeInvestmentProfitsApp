@@ -1,8 +1,8 @@
 {
   "private":true,
   "author": {
-    "email": "ExtremeInvestmentProfitsApp+qwweee7467@gmail.com",
-    "name": "Richard Hahn"
+    "email": "qwweee7467+ExtremeInvestmentProfitsApp@gmail.com",
+    "name": "Richard Han"
   },
   "dependencies": {    
     "simplecrawler": "^0.7.0",
